@@ -10,11 +10,13 @@ public:
 	void update(float dt) override;
 
 private:
-
+	Shader* my_shader;
 	unsigned int VBO, VAO;
-	float vertexData[9] = {0.5, 0.5, 0.0
-					  -0.5, 0.5, 0.0
-					 -0.5, -0.5, 0.0};
+	float vertexData[18] = { 0.5, 0.5, 0.0, 1.0,0.0,0.0,
+						  -0.5, 0.5, 0.0,  0.0,1.0,0.0,
+						  -0.5, -0.5, 0.0, 0.0,0.0,1.0};
+
+	
 
 	void MakeVAO();
 	void render();
