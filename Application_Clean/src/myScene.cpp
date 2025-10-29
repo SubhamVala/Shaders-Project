@@ -15,7 +15,7 @@ myScene::~myScene()
 void myScene::MakeVAO() 
 {
 	glCreateBuffers(1, &VBO);
-	glNamedBufferStorage(VBO, sizeof(float) * 18, vertexData , GL_DYNAMIC_STORAGE_BIT);
+	glNamedBufferStorage(VBO, sizeof(float) * 36, vertexData , GL_DYNAMIC_STORAGE_BIT);
 
 	glCreateVertexArrays(1, &VAO);
 
@@ -41,5 +41,5 @@ void myScene::render()
 {
 	my_shader->use();
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
