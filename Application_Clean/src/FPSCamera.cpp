@@ -2,7 +2,7 @@
 
 
 
-FirstPersonCamera::FirstPersonCamera(glm::vec3 pos) : Camera(pos), m_speed(5.0f), m_sensitivity(0.025f)
+FirstPersonCamera::FirstPersonCamera(glm::vec3 pos) : Camera(pos), m_speed(5.0f), m_sensitivity(0.25f)
 {
 	m_zoom = 45.0;
 	m_yaw = -90.0f;

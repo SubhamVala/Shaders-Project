@@ -13,7 +13,7 @@ out vec3 posInWS;	// passes position in world space to the fragmentshader.
 
 void main(){
 
-	normal = aNom;
+	normal = mat3(transpose(inverse(Model))) * aNom;
 
 	vec4 worldSpace = Model * vec4(aPos, 1.0);			  // the vertex in world space as vec4.
 	posInWS = worldSpace.xyz;							 // the vertex in world space as vec3.
