@@ -5,6 +5,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
+	my_shader->use();
 	MakeVAO();
 }
 
@@ -49,24 +50,24 @@ void myScene::render()
 	//camera
 	m_projection = m_camera->getProjectionMatrix();
 	m_view = m_camera->getViewMatrix();
-	my_shader->use();
 
 	//set uniforms
 	my_shader->setMat4("Model", m_model);
 	my_shader->setMat4("View", m_view);
 	my_shader->setMat4("Projection", m_projection);
 
+
+
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
+
+	// second cube
 	m_model = glm::translate(m_model, glm::vec3(5, 0.0, 0.0));
 
 	m_model = glm::rotate(m_model, (float)(glfwGetTime() * 3), glm::vec3(2.0, 0.0, 2.0));
 
 	m_model = glm::scale(m_model, glm::vec3(1.5, 1.5, 1.5));
 
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
-
-	
-	
 	my_shader->setMat4("Model", m_model);
 	//draw call for cube 2.
 	glDrawElements(GL_TRIANGLES, vertexData.size(), GL_UNSIGNED_INT, 0);

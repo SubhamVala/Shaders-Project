@@ -9,8 +9,14 @@ uniform mat4 Projection;
 
 
 out vec3 normal;
+out vec3 posInWS;	// passes position in world space to the fragmentshader.
+
 void main(){
+
 	normal = aNom;
-	gl_Position = Projection * View * Model * vec4(aPos, 1.0) ;
+
+	vec4 worldSpace = Model * vec4(aPos, 1.0);			  // the vertex in world space as vec4.
+	posInWS = worldSpace.xyz;							 // the vertex in world space as vec3.
+	gl_Position = Projection * View * worldSpace;         // already multiplied model matrix (Model * V).
 
 }
