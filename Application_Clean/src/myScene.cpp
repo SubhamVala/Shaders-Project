@@ -62,11 +62,21 @@ void myScene::render()
 	my_shader->setVec3("lightDirection", glm::vec3(-1.0f, -1.0f, 0.0f));
 	my_shader->setFloat("ambientFactor", 0.5);
 
+
+
 	// object uniforms
 	my_shader->setMat4("Model", m_model);
 	my_shader->setVec3("cubeColor", glm::vec3(0.1, 0.2, 0.3));
 	my_shader->setFloat("shine", 64);
 	my_shader->setFloat("specStrength", 0.9);
+
+	//point light uniforms
+
+	my_shader->setVec3("plightColor", glm::vec3(1.0, 0.0, 0.0));
+	my_shader->setVec3("plightPosition", glm::vec3(-2.0f, 0.0f, 0.0f));
+	my_shader->setVec3("pAttentuation", glm::vec3(1.0f, 0.9f, 0.032f));
+
+
 
 
 
@@ -75,7 +85,7 @@ void myScene::render()
 	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
 
 	// second cube
-	m_model = glm::translate(m_model, glm::vec3(5, 0.0, 0.0));
+	m_model = glm::translate(m_model, glm::vec3(5.0, 0.0, 0.0));
 
 	m_model = glm::rotate(m_model, (float)(glfwGetTime() * 3), glm::vec3(2.0, 0.0, 2.0));
 

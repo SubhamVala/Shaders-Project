@@ -58,7 +58,20 @@ private:
 		20, 21, 22, 22, 23, 20
 	};
 
-	
+	const float floorLevel = -2.0f;  // change these to whatever you like
+	const float floorSize = 7.0f;
+
+	std::vector<float> floorVertexData = {
+		-floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
+		floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
+		floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,
+		-floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,
+	};
+	std::vector<unsigned int> floorIndices = {
+		3,2,1,
+		3,1,0
+	};
+
 
 	void MakeVAO();
 	void render();
