@@ -74,7 +74,15 @@ void myScene::render()
 
 	my_shader->setVec3("plightColor", glm::vec3(1.0, 0.0, 0.0));
 	my_shader->setVec3("plightPosition", glm::vec3(-2.0f, 0.0f, 0.0f));
-	my_shader->setVec3("pAttentuation", glm::vec3(1.0f, 0.9f, 0.032f));
+	my_shader->setVec3("pAttentuation", glm::vec3(1.0f, 0.0009f, 0.0000032f));
+
+	// spot light uniforms
+
+	my_shader->setVec3("slightPosition", glm::vec3(0.0, 7.0, 0.0));
+	my_shader->setVec3("slightColour", glm::vec3(0.5, 1.0, 0.0));
+	my_shader->setVec3("sAttentuation", glm::vec3(1.0, 0.027, 0.002));
+	my_shader->setVec3("sDirection", m_camera->getFront());
+	my_shader->setVec2("sRadii", glm::vec2(glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5))));
 
 
 

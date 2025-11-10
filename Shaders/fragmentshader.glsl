@@ -6,9 +6,10 @@ in vec3 posInWS;
 
 uniform vec3 viewPos;
 uniform vec3 cubeColor;
+// Directional Light uniforms
 uniform vec3 lightColor;
 uniform vec3 lightDirection;
-
+//Point light Uniforms
 uniform vec3 plightPosition;
 uniform vec3 plightColor;
 uniform vec3 pAttentuation;
@@ -16,18 +17,28 @@ uniform vec3 pAttentuation;
 uniform float ambientFactor;
 uniform float shine;
 uniform float specStrength;
+// spotLight Uniforms
+
+uniform vec3 slightPosition;
+uniform vec3 slightColour;
+uniform vec3 sAttentuation;
+uniform vec3 sDirection;
+uniform vec3 sRadii;
 
 
 vec3 n = normalize(normal);						  // n = normalized surface normal.
 vec3 viewDir = normalize(viewPos - posInWS);	// PosInWS from VertexShader.
 vec3 ld = normalize(-lightDirection);
+vec3 sd = normalize(-sDirection);
 
 vec3 getDirectionalLight();  //foward declared functions, for void main.
 vec3 getPointLight();
+vec3 getSpotLight();
+
 void main() {
 	 
 	vec3 result = getDirectionalLight() * 0;
-	result += getPointLight();
+	result += getSpotLight();
 	FragColor = vec4(result, 1.0);
 }
 
@@ -60,15 +71,18 @@ vec3 getPointLight() {
 	float distance = length(plightPosition - posInWS);
 	float attn = 1.0 / (pAttentuation.x + (pAttentuation.y * distance) + (pAttentuation.z*(distance * distance)));
 
+	float ambientFactor = 0.7;
 	vec3 lightDir = normalize((plightPosition - posInWS));
+	vec3 ambient = cubeColor * plightColor * ambientFactor;
 
-	// BLINN PHONE
+	// BLINN PHONG
 	// Diffuse
 	float diffuseFactor = dot(n, lightDir);  // negate lightdirection
 	diffuseFactor = max(diffuseFactor, 0.0f);      // ensures diffuseFactor is not a negative.
 	vec3 diffuse = cubeColor * plightColor * diffuseFactor;			//DIFFUSE!
 
-	// Blinn Phong, Specular
+	// Blinn Phong
+	// Specular
 
 	vec3 h = normalize(lightDir + viewDir);	//negate lightDirection again so you get fragmentshader -> light
 	float specLevel = dot(n, h);
@@ -76,9 +90,53 @@ vec3 getPointLight() {
 	specLevel = pow(specLevel, shine);				// raises the specLevel to the power of shine.
 	vec3 specular = plightColor * specLevel * specStrength;               //SPECULAR!
 
-	diffuse = diffuse;
-	specular = specular;
+	diffuse = diffuse * attn;
+	specular = specular * attn;
+
+	return diffuse + specular + ambient;
+
+}
+
+vec3 getSpotLight() {
+
+	vec3 sLightDir = normalize((slightPosition - posInWS));
+	vec3 lightDir = normalize((slightPosition - posInWS));     // sLightDir, LightDir are the same thing, so fxi in theta line 128.
+	vec3 ambient = cubeColor * slightColour * ambientFactor;
+
+	float distance = length(slightPosition - posInWS);
+	float attn = 1.0 / (sAttentuation.x + (sAttentuation.y * distance) + (sAttentuation.z * (distance * distance)));
+	float ambientFactor = 0.7;
+	
+
+	// BLINN PHONG
+	// Diffuse
+	float diffuseFactor = dot(n, sd);  // negate lightdirection
+	diffuseFactor = max(diffuseFactor, 0.0f);      // ensures diffuseFactor is not a negative.
+	vec3 diffuse = cubeColor * slightColour * diffuseFactor;			//DIFFUSE!
+
+	// Blinn Phong,
+	// Specular
+	vec3 h = normalize(sd + viewDir);	//negate lightDirection again so you get fragmentshader -> light
+	float specLevel = dot(n, h);
+	specLevel = max(specLevel, 0.0);				// ensures specLevel > 0/not negative.
+	specLevel = pow(specLevel, shine);				// raises the specLevel to the power of shine.
+	vec3 specular = slightColour * specLevel * specStrength;               //SPECULAR!
+
+	
+	//spot light
+	//lightDir -> fragment to light, sLightdir is light to X, negate so both vectors point from light
+	float theta = dot(-sLightDir, normalize(sLightDir));
+	float denom = (sRadii.x - sRadii.y);
+	float intensity = (theta - sRadii.y) / denom;
+	intensity = clamp(intensity, 0.0, 1.0);
+
+	diffuse = diffuse * intensity;
+	specular = specular * intensity;
 
 	return diffuse + specular;
+		
+
+
+
 
 }
