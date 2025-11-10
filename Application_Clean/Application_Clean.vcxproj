@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="src\EntryPoint.cpp" />
     <ClCompile Include="src\FPSCamera.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -154,6 +155,7 @@
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\FPSCamera.h" />
     <ClInclude Include="include\GLFWinputCodes.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\WindowManager.h" />
+    <ClInclude Include="Light.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

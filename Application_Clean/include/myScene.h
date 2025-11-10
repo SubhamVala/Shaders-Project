@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Shader.h"
+#include "Lights/DirectionalLight.h"
 
 class myScene : public Scene
 {
@@ -11,6 +12,7 @@ public:
 
 private:
 	Shader* my_shader;
+	DirectionalLight* m_directionalLight;
 	unsigned int VBO, VAO, EBO;
 
 	glm::mat4 m_model, m_view, m_projection;

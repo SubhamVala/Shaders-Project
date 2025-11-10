@@ -26,7 +26,7 @@ vec3 getDirectionalLight();  //foward declared functions, for void main.
 vec3 getPointLight();
 void main() {
 	 
-	vec3 result = getDirectionalLight() * 0;
+	vec3 result = getDirectionalLight();
 	result += getPointLight();
 	FragColor = vec4(result, 1.0);
 }
@@ -70,14 +70,14 @@ vec3 getPointLight() {
 
 	// Blinn Phong, Specular
 
-	vec3 h = normalize(lightDir + viewDir);	//negate lightDirection again so you get fragmentshader -> light
+	vec3 h = normalize(lightDir + viewDir);
 	float specLevel = dot(n, h);
 	specLevel = max(specLevel, 0.0);				// ensures specLevel > 0/not negative.
 	specLevel = pow(specLevel, shine);				// raises the specLevel to the power of shine.
 	vec3 specular = plightColor * specLevel * specStrength;               //SPECULAR!
 
-	diffuse = diffuse;
-	specular = specular;
+	diffuse = diffuse* attn;
+	specular = specular* attn;
 
 	return diffuse + specular;
 
