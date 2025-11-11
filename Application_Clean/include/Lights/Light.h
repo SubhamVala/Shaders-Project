@@ -8,7 +8,7 @@ public:
 	~Light() {};
 
 protected:
-	glm::vec3& getColour() { return m_colour;  }
+	glm::vec3& getColour() { return m_colour; }
 	void setColour(glm::vec3 col) { m_colour = col; }
 
 	glm::vec3 m_colour;

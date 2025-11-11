@@ -1,51 +1,41 @@
 #pragma once
 #include "myScene.h";
 
+// constructor which initilises the windows and inputHandler
 myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
+	// creates the camera and attaches the input handler
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
+	// takes the vertex and fragment shader and compiles
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
+	// creates the directional lights and gives the uniforms a value
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(my_shader);
-	MakeVAO();
+	// creates the pointlight and gives the uniforms a value
+	m_pointLight = new PointLight(glm::vec3(1.0, 0.0, 0.0), glm::vec3(-2.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0009f, 0.0000032f));
+	m_pointLight->setLightUniforms(my_shader);
+	// creates the spotlight and gives the uniforms a value
+	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), m_camera->getFront(), glm::vec2(glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f))));
+	m_spotLight->setLightUniforms(my_shader);
+	// creates the cube and gives the uniforms a value.
+	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 0.9);
+	m_cube->setCubeMaterialValues(my_shader);
 }
 
 myScene::~myScene()
 {
+	delete my_shader;
+	delete m_cube;
+	delete m_directionalLight;
 }
 
-void myScene::MakeVAO() 
-{
-	glCreateBuffers(1, &VBO); // creates vertex buffer object
-	glNamedBufferStorage(VBO, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_STORAGE_BIT);
-	
-	glCreateBuffers(1, &EBO); // creates an element buffer object.
-	glNamedBufferStorage(EBO, sizeof(unsigned int) * cubeIndices.size(), cubeIndices.data(), GL_DYNAMIC_STORAGE_BIT);
-
-
-	glCreateVertexArrays(1, &VAO); // creates vertex array object.
-	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 6);
-	glVertexArrayElementBuffer(VAO, EBO); // Adding EBO TO VBO
-
-	glEnableVertexArrayAttrib(VAO, 0);
-	glEnableVertexArrayAttrib(VAO, 1);
-
-
-	glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-
-
-	glVertexArrayAttribBinding(VAO, 0, 0);
-	glVertexArrayAttribBinding(VAO, 1, 0);
-
-}
 
 void myScene::update(float dt) {
 	m_camera->update(dt);
 	render();
 }
 
-void myScene::render() 
+void myScene::render()
 {
 	m_model = glm::mat4(1.0f); // identity matrix
 	//camera
@@ -59,37 +49,20 @@ void myScene::render()
 	my_shader->setMat4("Projection", m_projection);
 	my_shader->setVec3("viewPos", m_camera->getPosition());
 
-	// object uniforms
-	my_shader->setMat4("Model", m_model);
-	my_shader->setVec3("cubeColor", glm::vec3(0.1, 0.2, 0.3));
-	my_shader->setFloat("shine", 64);
-	my_shader->setFloat("specStrength", 0.9);
 
-	//point light uniforms
-
-	my_shader->setVec3("plightColor", glm::vec3(1.0, 0.0, 0.0));
-	my_shader->setVec3("plightPosition", glm::vec3(-2.0f, 0.0f, 0.0f));
-	my_shader->setVec3("pAttentuation", glm::vec3(1.0f, 0.9f, 0.032f));
-
-
-
-
-
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(m_cube->getVAO());
+	m_cube->resetTranform();
+	m_cube->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
 	// second cube
-	m_model = glm::translate(m_model, glm::vec3(5.0, 0.0, 0.0));
+	m_cube->resetTranform();
+	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
+	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 0.0f, 2.0f));
+	m_cube->setTransform(my_shader);
 
-	m_model = glm::rotate(m_model, (float)(glfwGetTime() * 3), glm::vec3(2.0, 0.0, 2.0));
-
-	m_model = glm::scale(m_model, glm::vec3(1.5, 1.5, 1.5));
-
-	my_shader->setMat4("Model", m_model);
 	//draw call for cube 2.
-	glDrawElements(GL_TRIANGLES, vertexData.size(), GL_UNSIGNED_INT, 0);
-
-	
+	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	m_cube->resetTranform();
 
 }

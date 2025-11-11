@@ -3,6 +3,7 @@
 
 #include "Shader.h"
 #include "Light.h"
+#include <memory>
 
 class DirectionalLight : public Light {
 
@@ -17,7 +18,7 @@ public:
 	void setDirection(glm::vec3& dir) { m_direction = dir; }
 	void setAmbient(float& a) { m_ambientFactor = a; }
 	glm::vec3& setDirection() { return m_direction; }
-	float& setAmbient() { return m_ambientFactor; }
+	float& getAmbientFactor() { return m_ambientFactor; }
 
 
 private:
