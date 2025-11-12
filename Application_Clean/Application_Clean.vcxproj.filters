@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{a3e31076-6c00-4898-8e70-8ac3bfc6148e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Textures">
+      <UniqueIdentifier>{151846a9-5fac-4ac9-a783-d4a7a8fcdbbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EntryPoint.cpp">
@@ -51,7 +54,7 @@
     <ClCompile Include="src\Lights\PointLight.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
+    <ClCompile Include="src\Lights\SpotLight.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
@@ -97,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="include\Lights\PointLight.h">
       <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Textures\TextureManager.h">
+      <Filter>Header Files\Textures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

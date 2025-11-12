@@ -102,7 +102,7 @@ vec3 getPointLight() {
 
 vec3 getSpotLight() {
 
-	float ambientFactor = 0.05;
+	float ambientFactor = 0.3;
 
 	vec3 sLightDir = normalize((slightPosition - posInWS));
 	vec3 lightDir = normalize((viewPos - posInWS));     
@@ -141,7 +141,7 @@ vec3 getSpotLight() {
 	diffuse = diffuse * intensity;
 	specular = specular * intensity;
 
-	return diffuse + specular + ambient;
+	return diffuse + specular;
 	
 
 }

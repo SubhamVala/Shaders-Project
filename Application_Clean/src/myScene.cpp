@@ -48,6 +48,7 @@ void myScene::render()
 	my_shader->setMat4("View", m_view);
 	my_shader->setMat4("Projection", m_projection);
 	my_shader->setVec3("viewPos", m_camera->getPosition());
+	my_shader->setVec3("sDirection", m_camera->getFront());
 
 
 	glBindVertexArray(m_cube->getVAO());

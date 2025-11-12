@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="src\Cube.cpp" />
     <ClCompile Include="src\EntryPoint.cpp" />
     <ClCompile Include="src\FPSCamera.cpp" />
@@ -153,6 +152,7 @@
     <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\Lights\DirectionalLight.cpp" />
     <ClCompile Include="src\Lights\PointLight.cpp" />
+    <ClCompile Include="src\Lights\SpotLight.cpp" />
     <ClCompile Include="src\myScene.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
@@ -171,7 +171,9 @@
     <ClInclude Include="include\Properties.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Textures\TextureManager.h" />
     <ClInclude Include="include\WindowManager.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
