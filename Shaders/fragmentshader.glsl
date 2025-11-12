@@ -3,6 +3,7 @@
 out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
+in vec2 uv;
 
 uniform vec3 viewPos;
 uniform vec3 cubeColor;
@@ -28,6 +29,9 @@ uniform vec3 sAttentuation;
 uniform vec3 sDirection;
 uniform vec2 sRadii;
 
+// Material properties
+uniform sampler2D diffuseMap;
+uniform sampler2D specularMap;
 
 vec3 n = normalize(normal);						  // n = normalized surface normal.
 vec3 viewDir = normalize(viewPos - posInWS);	// PosInWS from VertexShader.
@@ -40,22 +44,27 @@ vec3 getSpotLight();
 
 void main() {
 	 
-	vec3 result = getDirectionalLight() * 0;
-	result += getSpotLight();
+
+	vec3 result = getDirectionalLight() ;
+	result += getPointLight() + getSpotLight();
 	FragColor = vec4(result, 1.0);
 }
 
 
 // Vec3 function for the light.
 
-vec3 getDirectionalLight() {      
+vec3 getDirectionalLight() {     
+
+	vec3 objCol = texture(diffuseMap, uv).rgb ; 
+	float specStrength = texture(specularMap, uv).r;
+
 	// ambient
-	vec3 ambient = cubeColor * lightColor * ambientFactor;			//AMBIENT!!!
+	vec3 ambient = objCol * lightColor * ambientFactor;			//AMBIENT!!!
 
 	// diffuse
 	float diffuseFactor = dot(n, ld) ;  // negated lightdirection
 	diffuseFactor = max(diffuseFactor, 0.0f) ;      // ensures diffuseFactor is not a negative.
-	vec3 diffuse = cubeColor * lightColor * diffuseFactor;			//DIFFUSE!
+	vec3 diffuse = objCol * lightColor * diffuseFactor;			//DIFFUSE!
 
 	// Blinn Phong, Specular
 
@@ -70,20 +79,23 @@ vec3 getDirectionalLight() {
 
 vec3 getPointLight() {
 
+	vec3 objCol = texture(diffuseMap, uv).rgb ; 
+	float specStrength = texture(specularMap, uv).r;
+
 	// attn
 	float distance = length(plightPosition - posInWS);
 	float attn = 1.0 / (pAttentuation.x + (pAttentuation.y * distance) + (pAttentuation.z*(distance * distance)));
 
 	float ambientFactor = 0.7;
 	vec3 lightDir = normalize((plightPosition - posInWS));
-	vec3 ambient = cubeColor * plightColor * ambientFactor;
+	vec3 ambient = objCol * plightColor * ambientFactor;
 
 	// BLINN PHONG
 	// Diffuse
 
 	float diffuseFactor = dot(n, lightDir);  // negate lightdirection
 	diffuseFactor = max(diffuseFactor, 0.0f);      // ensures diffuseFactor is not a negative.
-	vec3 diffuse = cubeColor * plightColor * diffuseFactor;			//DIFFUSE!
+	vec3 diffuse = objCol * plightColor * diffuseFactor;			//DIFFUSE!
 
 	// Blinn Phong
 	// Specular
@@ -103,11 +115,14 @@ vec3 getPointLight() {
 
 vec3 getSpotLight() {
 
+	vec3 objCol = texture(diffuseMap, uv).rgb ; 
+	float specStrength = texture(specularMap, uv).r;
+
 	float ambientFactor = 0.3;
 
-	vec3 sLightDir = normalize((slightPosition - posInWS));
+	vec3 sLightDir = normalize((sDirection));
 	vec3 lightDir = normalize((viewPos - posInWS));     
-	vec3 ambient = cubeColor * slightColour * ambientFactor;
+	vec3 ambient = objCol * slightColour * ambientFactor;
 
 	float distance = length(slightPosition - posInWS);
 	float attn = 1.0 / (sAttentuation.x + (sAttentuation.y * distance) + (sAttentuation.z * (distance * distance)));
@@ -117,7 +132,7 @@ vec3 getSpotLight() {
 	// Diffuse
 	float diffuseFactor = dot(n, sd);  // negate lightdirection
 	diffuseFactor = max(diffuseFactor, 0.0f);      // ensures diffuseFactor is not a negative.
-	vec3 diffuse = cubeColor * slightColour * diffuseFactor;			//DIFFUSE!
+	vec3 diffuse = objCol * slightColour * diffuseFactor;			//DIFFUSE!
 
 	// Blinn Phong,
 	// Specular

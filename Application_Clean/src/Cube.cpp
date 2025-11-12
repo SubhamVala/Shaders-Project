@@ -1,12 +1,14 @@
 #include "Cube.h"
 #include "myScene.h"
 
-Cube::Cube(glm::vec3 col, float shine, float specStrength) : m_colour(col), m_shine(shine), m_specularStrength(specStrength)
+Cube::Cube(float shine, int diffuseTexture, int specularTexture) : 
+
+	m_shine(shine), 
+	m_diffuseTexture(diffuseTexture), 
+	m_specularTexture(specularTexture)
 {
 	makeVAO();
 	resetTranform();
-
-
 }
 
 Cube::~Cube()
@@ -16,9 +18,12 @@ Cube::~Cube()
 void Cube::setCubeMaterialValues(Shader* shader)
 {
 	shader->use();
-	shader->setVec3("cubeColor", m_colour);
 	shader->setFloat("shine", m_shine);
-	shader->setFloat("specStrength", m_specularStrength);
+	shader->setInt("diffuseMap", 0);
+	shader->setInt("specularMap", 1);
+
+	glBindTextureUnit(0, m_diffuseTexture);
+	glBindTextureUnit(1, m_specularTexture);
 }
 
 void Cube::rotate(float angle, glm::vec3 axis)
@@ -56,7 +61,7 @@ void Cube::makeVAO()
 
 	glVertexArrayAttribFormat(m_VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
 	glVertexArrayAttribFormat(m_VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-	glVertexArrayAttribFormat(m_VAO, 2, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float));
+	glVertexArrayAttribFormat(m_VAO, 2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float));
 
 
 	glVertexArrayAttribBinding(m_VAO, 0, 0);

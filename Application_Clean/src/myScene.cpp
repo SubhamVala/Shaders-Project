@@ -8,6 +8,8 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_camera->attachHandler(m_window, m_handler);
 	// takes the vertex and fragment shader and compiles
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
+	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
+	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
 	// creates the directional lights and gives the uniforms a value
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(my_shader);
@@ -18,7 +20,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), m_camera->getFront(), glm::vec2(glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f))));
 	m_spotLight->setLightUniforms(my_shader);
 	// creates the cube and gives the uniforms a value.
-	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 0.9);
+	m_cube = new Cube(64, cubeDiff, cubeSpec);
 	m_cube->setCubeMaterialValues(my_shader);
 }
 

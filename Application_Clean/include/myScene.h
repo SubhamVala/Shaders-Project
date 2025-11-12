@@ -4,7 +4,7 @@
 #include "Lights/PointLight.h"
 #include "Cube.h"
 #include "Lights/SpotLight.h"
-
+#include "Textures/TextureManager.h"
 class myScene : public Scene
 {
 

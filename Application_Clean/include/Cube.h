@@ -10,7 +10,7 @@
 class Cube {
 
 public:
-	Cube(glm::vec3 col, float shine, float specStrength);  // constructer taking material values for cube.
+	Cube(float shine, int diffuseTexture, int specularTexture);  // constructer taking material values for cube.
 	~Cube();
 	void setCubeMaterialValues(Shader* shader); // sets the material values in the shader.
 
@@ -29,14 +29,14 @@ public:
 
 private:
 	void makeVAO();  // Cube will make its own VAO, not scene.
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_EBO;
+	unsigned int m_VAO, m_VBO, m_EBO;
 	glm::mat4 m_transform; // model matrix / transform
 	
 	// material properties
 	float m_shine;
 	float m_specularStrength;
+	unsigned int m_diffuseTexture;
+	unsigned int m_specularTexture;
 	glm::vec3 m_colour;
 
 	// geometry data
