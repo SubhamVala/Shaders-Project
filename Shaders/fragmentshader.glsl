@@ -8,6 +8,11 @@ in vec2 uv;
 uniform vec3 viewPos;
 uniform vec3 cubeColor;
 
+// Floor Uniforms
+uniform vec3 floorColor;
+uniform float floorShine;
+uniform float floorSpecStrength;
+
 // Directional Light uniforms
 uniform vec3 lightColor;
 uniform vec3 lightDirection;
@@ -118,7 +123,7 @@ vec3 getSpotLight() {
 	vec3 objCol = texture(diffuseMap, uv).rgb ; 
 	float specStrength = texture(specularMap, uv).r;
 
-	float ambientFactor = 0.3;
+	float ambientFactor = 0.05;
 
 	vec3 sLightDir = normalize((sDirection));
 	vec3 lightDir = normalize((viewPos - posInWS));     
@@ -157,7 +162,7 @@ vec3 getSpotLight() {
 	diffuse = diffuse * intensity;
 	specular = specular * intensity;
 
-	return diffuse + specular;
+	return diffuse + specular + ambient;
 	
 
 }

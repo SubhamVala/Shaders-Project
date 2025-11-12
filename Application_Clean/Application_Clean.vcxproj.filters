@@ -66,6 +66,9 @@
     <ClCompile Include="src\Textures\stb_image.cpp">
       <Filter>Source Files\Textures</Filter>
     </ClCompile>
+    <ClCompile Include="src\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\WindowManager.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="include\Textures\stb_image.h">
       <Filter>Header Files\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plane.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

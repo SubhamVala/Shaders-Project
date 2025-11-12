@@ -8,6 +8,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_camera->attachHandler(m_window, m_handler);
 	// takes the vertex and fragment shader and compiles
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
+	// takes texture of cube and compiles inside fragment shader.
 	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
 	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
 	// creates the directional lights and gives the uniforms a value
@@ -22,6 +23,9 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	// creates the cube and gives the uniforms a value.
 	m_cube = new Cube(64, cubeDiff, cubeSpec);
 	m_cube->setCubeMaterialValues(my_shader);
+	// creates the floor and gives the uniforms a value;
+	m_plane = new Plane(glm::vec3(1.0), 64, 0.9);
+	m_plane->setPlaneMaterialValues(my_shader);
 }
 
 myScene::~myScene()
@@ -67,5 +71,11 @@ void myScene::render()
 	//draw call for cube 2.
 	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTranform();
+
+
+	glBindVertexArray(m_plane->getVAO());
+	m_plane->resetTransform();
+	m_plane->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
 }

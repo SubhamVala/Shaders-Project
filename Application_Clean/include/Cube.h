@@ -37,7 +37,6 @@ private:
 	float m_specularStrength;
 	unsigned int m_diffuseTexture;
 	unsigned int m_specularTexture;
-	glm::vec3 m_colour;
 
 	// geometry data
 
