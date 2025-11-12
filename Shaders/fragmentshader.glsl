@@ -19,6 +19,7 @@ uniform vec3 pAttentuation;
 uniform float ambientFactor;
 uniform float shine;
 uniform float specStrength;
+// spotLight Uniforms
 
 // SpotLight Uniforms
 uniform vec3 slightPosition;

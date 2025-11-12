@@ -62,6 +62,4 @@ void Cube::makeVAO()
 	glVertexArrayAttribBinding(m_VAO, 0, 0);
 	glVertexArrayAttribBinding(m_VAO, 1, 0);
 	glVertexArrayAttribBinding(m_VAO, 2, 0);
-	
-
 }
