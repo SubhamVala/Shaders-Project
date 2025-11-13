@@ -23,6 +23,10 @@ private:
 	Plane* m_plane;
 
 	bool useNM = false;
+	bool useDL = false;
+	bool usePL = false;
+	bool useSL = false;
+
 
 	glm::mat4 m_model, m_view, m_projection;
 

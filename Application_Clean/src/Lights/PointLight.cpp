@@ -10,6 +10,9 @@ void PointLight::setLightUniforms(Shader* shader)
 {
 	shader->use();
 	shader->setVec3("plightColor", m_colour);
+
 	shader->setVec3("plightPosition", m_position);
+
 	shader->setVec3("pAttentuation", m_constants);
+
 }

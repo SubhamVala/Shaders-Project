@@ -57,6 +57,7 @@ void Cube::makeVAO()
 	glVertexArrayVertexBuffer(m_VAO, 0, m_VBO, 0, sizeof(float) * 11);
 	glVertexArrayElementBuffer(m_VAO, m_EBO); // Adding EBO TO VBO
 
+	// creates attributes for positon, normals, uvs and tangent.
 	glEnableVertexArrayAttrib(m_VAO, 0);
 	glEnableVertexArrayAttrib(m_VAO, 1);
 	glEnableVertexArrayAttrib(m_VAO, 2);

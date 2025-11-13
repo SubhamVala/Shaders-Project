@@ -35,13 +35,14 @@ uniform vec3 sAttentuation;
 uniform vec3 sDirection;
 uniform vec2 sRadii;
 uniform int useNM;
+uniform int useDL;
+uniform int usePL;
+uniform int useSL;
 
 // Material properties
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
 uniform sampler2D normalMap;
-
-
 
 vec3 viewDir = normalize(viewPos - posInWS);	// PosInWS from VertexShader.
 vec3 ld = normalize(-lightDirection);          // negated -lightDirection, so you get fragmentshader -> light
@@ -55,13 +56,12 @@ vec3 getPointLight();
 vec3 getSpotLight();
 
 void main() {
-	if(useNM!=0) {
+	if(useNM==0) {
 	n = texture(normalMap, uv).rgb;
 	n = n * 2.0 - 1.0;
 	n = normalize(TBN * n);
 	}
-
-	vec3 result = getDirectionalLight() ;
+	vec3 result = getDirectionalLight();
 	result += getPointLight() + getSpotLight();
 	FragColor = vec4(result, 1.0);
 }
@@ -89,7 +89,10 @@ vec3 getDirectionalLight() {
 	specLevel = pow(specLevel, shine);				// raises the specLevel to the power of shine.
 	vec3 specular = lightColor * specLevel * specStrength;               //SPECULAR!
 
-	return ambient + diffuse + specular;				//BLINN PHONG!!!
+	if (useDL==0) 
+	{
+		return ambient + diffuse + specular;				//BLINN PHONG!!!
+	}
 }
 
 vec3 getPointLight() {
@@ -124,7 +127,10 @@ vec3 getPointLight() {
 	diffuse = diffuse * attn;
 	specular = specular * attn;
 
+	if(usePL==0) {
 	return diffuse + specular + ambient;
+	}
+	
 
 }
 
@@ -172,7 +178,7 @@ vec3 getSpotLight() {
 	diffuse = diffuse * intensity;
 	specular = specular * intensity;
 
-	return diffuse + specular + ambient;
-	
-
+	if(useSL== 0) {
+		return diffuse + specular + ambient;
+	}
 }

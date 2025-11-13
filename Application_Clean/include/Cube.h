@@ -17,6 +17,7 @@ public:
 	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
 	void resetTranform() { m_transform = glm::mat4(1.0); }
 
+	// Getters
 	unsigned int getVAO() { return m_VAO; }
 	unsigned int getVBO() { return m_VBO; }
 	unsigned int getEBO() { return m_EBO; }

@@ -39,14 +39,27 @@ myScene::~myScene()
 	delete my_shader;
 	delete m_cube;
 	delete m_directionalLight;
+	delete m_plane;
+	delete m_pointLight;
+	delete m_spotLight;
 }
 
 
 void myScene::update(float dt) {
 	m_camera->update(dt);
 	render();
-	if (m_handler->isKeyPressed(GLFW_KEY_Q)) {
+	if (m_handler->isKeyPressed(GLFW_KEY_Q)) {    // attaches inputhandler, key Q, for normal mapping.
 		useNM = !useNM;
+	}
+	if (m_handler->isKeyPressed(GLFW_KEY_E)) {    // attaches inputhandler, key E, for Directional Light.
+		useDL = !useDL;
+	}
+	if (m_handler->isKeyPressed(GLFW_KEY_R)) {    // attaches inputhandler, key R, for Point Light.
+		usePL = !usePL;
+	}
+
+	if (m_handler->isKeyPressed(GLFW_KEY_T)) {    // attaches inputhandler, key T, for Spot Light.
+		useSL = !useSL;
 	}
 }
 
@@ -64,7 +77,12 @@ void myScene::render()
 	my_shader->setMat4("Projection", m_projection);
 	my_shader->setVec3("viewPos", m_camera->getPosition());
 	my_shader->setVec3("sDirection", m_camera->getFront());
+
+	//uniforms for the toggle of lights.
 	my_shader->setInt("useNM", useNM);
+	my_shader->setInt("useDL", useDL);
+	my_shader->setInt("useSL", useSL);
+	my_shader->setInt("usePL", usePL);
 
 	// cube.
 	glBindVertexArray(m_cube->getVAO());
@@ -79,8 +97,6 @@ void myScene::render()
 	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
 	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 0.0f, 2.0f));
 	m_cube->setTransform(my_shader);
-
-	//draw call for cube 2.
 	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTranform();
 
@@ -90,5 +106,11 @@ void myScene::render()
 	m_plane->resetTransform();
 	m_plane->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
+
+	// floor
+	//m_plane->resetTransform();
+	//m_plane->setPlaneMaterialValues(my_shader);
+	//m_plane->setTransform(my_shader);
+	//glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
 }
