@@ -104,7 +104,8 @@ vec3 getPointLight() {
 	float distance = length(plightPosition - posInWS);
 	float attn = 1.0 / (pAttentuation.x + (pAttentuation.y * distance) + (pAttentuation.z*(distance * distance)));
 
-	float ambientFactor = 0.7;
+	float ambientFactor = 0.1;
+
 	vec3 lightDir = normalize((plightPosition - posInWS));
 	vec3 ambient = objCol * plightColor * ambientFactor;
 

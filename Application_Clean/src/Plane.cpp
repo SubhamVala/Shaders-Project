@@ -6,7 +6,7 @@ Plane::Plane(float shine, int diffuseTexture, int specularTexture, int normalTex
 
 	m_diffuseTexture(diffuseTexture),
 	m_shine(shine),
-	m_specularTexture(specularTexture)	,
+	m_specularTexture(specularTexture),
 	m_normalTexture(normalTexture)
 {
 	makeVAO();

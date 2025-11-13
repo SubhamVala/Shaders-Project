@@ -9,7 +9,7 @@ class DirectionalLight : public Light {
 
 public:
 	//Contructed needs a colour, direction and ambient value.
-	DirectionalLight(glm::vec3 colour, glm::vec3 direction, float ambient = 0.5);
+	DirectionalLight(glm::vec3 colour, glm::vec3 direction, float ambient = 1.0);
 	~DirectionalLight() {};
 	//sets light uniforms in the shader
 	void setLightUniforms(Shader* shader);

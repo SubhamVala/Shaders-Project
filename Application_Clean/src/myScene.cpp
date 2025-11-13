@@ -18,10 +18,10 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	unsigned int floorDiff = TextureManager::loadTexture("..\\Resources\\diffuseFloor.jpg");
 	unsigned int floorSpec = TextureManager::loadTexture("..\\Resources\\specularFloor.jpg");
 	// creates the directional lights and gives the uniforms a value
-	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
+	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-2.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(my_shader);
 	// creates the pointlight and gives the uniforms a value
-	m_pointLight = new PointLight(glm::vec3(1.0, 0.0, 0.0), glm::vec3(-2.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0009f, 0.0000032f));
+	m_pointLight = new PointLight(glm::vec3(1.0, 0.0, 0.0), glm::vec3(-2.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.09f, 0.032f));
 	m_pointLight->setLightUniforms(my_shader);
 	// creates the spotlight and gives the uniforms a value
 	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), m_camera->getFront(), glm::vec2(glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f))));
@@ -31,7 +31,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_cube->setCubeMaterialValues(my_shader);
 	// creates the floor and gives the uniforms a value;
 	m_plane = new Plane(64, floorDiff, floorSpec, floorNorm);
-	m_plane->setPlaneMaterialValues(my_shader);
+		
 }
 
 myScene::~myScene()

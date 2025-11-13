@@ -21,7 +21,7 @@ public:
 	unsigned int getEBO() { return m_EBO; }
 	glm::mat4& getModelMatrix() { return m_transform; }
 	unsigned int getIndicesCount() { return floorIndices.size(); }
-
+	 
 private:
 	const float floorLevel = -2.0f;
 	const float floorSize = 7.0f;

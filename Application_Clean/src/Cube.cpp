@@ -69,7 +69,7 @@ void Cube::makeVAO()
 	glVertexArrayAttribFormat(m_VAO, 2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float));
 	glVertexArrayAttribFormat(m_VAO, 3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float));
 
-
+		
 	glVertexArrayAttribBinding(m_VAO, 0, 0);
 	glVertexArrayAttribBinding(m_VAO, 1, 0);
 	glVertexArrayAttribBinding(m_VAO, 2, 0);
