@@ -4,13 +4,14 @@ out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
 in vec2 uv;
+in vec3 tan;
+in mat3 TBN;
 
 uniform vec3 viewPos;
 uniform vec3 cubeColor;
 
 // Floor Uniforms
 uniform vec3 floorColor;
-uniform float floorShine;
 uniform float floorSpecStrength;
 
 // Directional Light uniforms
@@ -33,31 +34,42 @@ uniform vec3 slightColour;
 uniform vec3 sAttentuation;
 uniform vec3 sDirection;
 uniform vec2 sRadii;
+uniform int useNM;
 
 // Material properties
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
+uniform sampler2D normalMap;
 
-vec3 n = normalize(normal);						  // n = normalized surface normal.
+
+
 vec3 viewDir = normalize(viewPos - posInWS);	// PosInWS from VertexShader.
-vec3 ld = normalize(-lightDirection);         // negated -lightDirection, so you get fragmentshader -> light
+vec3 ld = normalize(-lightDirection);          // negated -lightDirection, so you get fragmentshader -> light
 vec3 sd = normalize(-sDirection);             // negated -sDirection
+vec3 n = normalize(normal);						 // n = normalized surface normal.
 
-vec3 getDirectionalLight();  //foward declared functions, for void main.
+
+//foward declared functions, for void main.
+vec3 getDirectionalLight();  
 vec3 getPointLight();
 vec3 getSpotLight();
 
 void main() {
-	 
+	if(useNM!=0) {
+	n = texture(normalMap, uv).rgb;
+	n = n * 2.0 - 1.0;
+	n = normalize(TBN * n);
+	}
+
 
 	vec3 result = getDirectionalLight() ;
 	result += getPointLight() + getSpotLight();
 	FragColor = vec4(result, 1.0);
+
 }
 
 
 // Vec3 function for the light.
-
 vec3 getDirectionalLight() {     
 
 	vec3 objCol = texture(diffuseMap, uv).rgb ; 

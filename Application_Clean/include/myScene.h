@@ -22,6 +22,8 @@ private:
 	SpotLight* m_spotLight;
 	Plane* m_plane;
 
+	bool useNM = false;
+
 	glm::mat4 m_model, m_view, m_projection;
 
 	void render();

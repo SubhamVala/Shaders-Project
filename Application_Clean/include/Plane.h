@@ -9,11 +9,11 @@
 class Plane
 {
 public:
-	Plane(glm::vec3 col, float shine, float specStrength); // constructer, taking colour, shine and specular strength
+	Plane(float shine, int diffuseTexture, int specularTexture, int normalTexture); // constructer, taking colour, shine and specular strength
 	~Plane() {};
 	void setPlaneMaterialValues(Shader* shader);
 	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
-	void resetTransform() { m_transform = glm::mat4(1.0); }
+	void resetTransform() { m_transform = glm::mat4(1.0); }  // resets model matrix
 
 	unsigned int getVAO() { return m_VAO; }
 	unsigned int getVBO() { return m_VBO; }
@@ -29,19 +29,25 @@ private:
 	unsigned int m_VAO, m_VBO, m_EBO;
 	glm::mat4 m_transform;
 
+	// properties of the floor.
 	float m_shine;
 	float m_specularStrength;
-	glm::vec3 m_floorColour;
+	unsigned int m_diffuseTexture;
+	unsigned int m_specularTexture;
+	unsigned int m_normalTexture;
+
+	// geometry data.
 
 	std::vector<float> floorVertexData = {
-		-floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
-		floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
-		floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,
-		-floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,
+	-floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,  0.0,0.0,  1.0f, 0.0f, 0.0f,
+	 floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,  1.0,0.0,  1.0f, 0.0f, 0.0f,
+	 floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,  1.0,1.0,  1.0f, 0.0f, 0.0f,
+	-floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,  0.0,1.0,  1.0f, 0.0f, 0.0f
 	};
 	std::vector<unsigned int> floorIndices = {
 		3,2,1,
 		3,1,0
 	};
+
 
 };

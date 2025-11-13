@@ -8,9 +8,14 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_camera->attachHandler(m_window, m_handler);
 	// takes the vertex and fragment shader and compiles
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
+
+	unsigned int cubeNorm = TextureManager::loadTexture("..\\Resources\\normalCube.jpg");
 	// takes texture of cube and compiles inside fragment shader.
 	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
 	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
+	// takes textures of floor and compiles inside fragment shader.
+	//unsigned int floorDiff = TextureManager::loadTexture("..\\Resources\\diffuseFloor.jpg");
+	//unsigned int floorSpec = TextureManager::loadTexture("..\\Resources\\specularFloor.jpg");
 	// creates the directional lights and gives the uniforms a value
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(my_shader);
@@ -21,10 +26,10 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), m_camera->getFront(), glm::vec2(glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(17.5f))));
 	m_spotLight->setLightUniforms(my_shader);
 	// creates the cube and gives the uniforms a value.
-	m_cube = new Cube(64, cubeDiff, cubeSpec);
+	m_cube = new Cube(64, cubeDiff, cubeSpec, cubeNorm);
 	m_cube->setCubeMaterialValues(my_shader);
 	// creates the floor and gives the uniforms a value;
-	m_plane = new Plane(glm::vec3(1.0), 64, 0.9);
+	m_plane = new Plane(64, cubeDiff, cubeSpec, cubeNorm);
 	m_plane->setPlaneMaterialValues(my_shader);
 }
 
@@ -39,6 +44,9 @@ myScene::~myScene()
 void myScene::update(float dt) {
 	m_camera->update(dt);
 	render();
+	if (m_handler->isKeyPressed(GLFW_KEY_Q)) {
+		useNM = !useNM;
+	}
 }
 
 void myScene::render()
@@ -55,8 +63,9 @@ void myScene::render()
 	my_shader->setMat4("Projection", m_projection);
 	my_shader->setVec3("viewPos", m_camera->getPosition());
 	my_shader->setVec3("sDirection", m_camera->getFront());
+	my_shader->setInt("useNM", useNM);
 
-
+	// cube.
 	glBindVertexArray(m_cube->getVAO());
 	m_cube->resetTranform();
 	m_cube->setTransform(my_shader);
@@ -72,7 +81,7 @@ void myScene::render()
 	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTranform();
 
-
+	// floor
 	glBindVertexArray(m_plane->getVAO());
 	m_plane->resetTransform();
 	m_plane->setTransform(my_shader);
