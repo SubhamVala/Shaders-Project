@@ -36,6 +36,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 
 myScene::~myScene()
 {
+	// prevents deleting myScene and memory leaks.
 	delete my_shader;
 	delete m_cube;
 	delete m_directionalLight;
@@ -106,11 +107,5 @@ void myScene::render()
 	m_plane->resetTransform();
 	m_plane->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
-
-	// floor
-	//m_plane->resetTransform();
-	//m_plane->setPlaneMaterialValues(my_shader);
-	//m_plane->setTransform(my_shader);
-	//glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
 }

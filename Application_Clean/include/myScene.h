@@ -21,7 +21,8 @@ private:
 	PointLight* m_pointLight;
 	SpotLight* m_spotLight;
 	Plane* m_plane;
-
+	
+	// sets all the inputs false.
 	bool useNM = false;
 	bool useDL = false;
 	bool usePL = false;

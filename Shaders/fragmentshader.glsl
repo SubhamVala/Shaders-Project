@@ -1,6 +1,9 @@
 #version 460 core
 
+
 out vec4 FragColor;
+
+// takes in from vertexShader
 in vec3 normal;
 in vec3 posInWS;
 in vec2 uv;
@@ -25,8 +28,6 @@ uniform vec3 pAttentuation;
 
 uniform float ambientFactor;
 uniform float shine;
-uniform float specStrength;
-// spotLight Uniforms
 
 // SpotLight Uniforms
 uniform vec3 slightPosition;
@@ -56,11 +57,15 @@ vec3 getPointLight();
 vec3 getSpotLight();
 
 void main() {
+
+	// if Q is pressed then it will turn the normal mapping off.
 	if(useNM==0) {
 	n = texture(normalMap, uv).rgb;
 	n = n * 2.0 - 1.0;
 	n = normalize(TBN * n);
 	}
+
+	// Shows all the lights.
 	vec3 result = getDirectionalLight();
 	result += getPointLight() + getSpotLight();
 	FragColor = vec4(result, 1.0);
@@ -70,6 +75,7 @@ void main() {
 // Vec3 function for the light.
 vec3 getDirectionalLight() {     
 
+	// texture for the objects and speculars
 	vec3 objCol = texture(diffuseMap, uv).rgb ; 
 	float specStrength = texture(specularMap, uv).r;
 
@@ -89,6 +95,7 @@ vec3 getDirectionalLight() {
 	specLevel = pow(specLevel, shine);				// raises the specLevel to the power of shine.
 	vec3 specular = lightColor * specLevel * specStrength;               //SPECULAR!
 
+	// if key is pressed then turns off directional light.
 	if (useDL==0) 
 	{
 		return ambient + diffuse + specular;				//BLINN PHONG!!!
@@ -97,6 +104,7 @@ vec3 getDirectionalLight() {
 
 vec3 getPointLight() {
 
+	// texture for the objects and speculars
 	vec3 objCol = texture(diffuseMap, uv).rgb ; 
 	float specStrength = texture(specularMap, uv).r;
 
@@ -128,6 +136,7 @@ vec3 getPointLight() {
 	diffuse = diffuse * attn;
 	specular = specular * attn;
 
+	// if button pressed then turns off pointlight
 	if(usePL==0) {
 	return diffuse + specular + ambient;
 	}
@@ -137,6 +146,7 @@ vec3 getPointLight() {
 
 vec3 getSpotLight() {
 
+	// texture for the objects and speculars
 	vec3 objCol = texture(diffuseMap, uv).rgb ; 
 	float specStrength = texture(specularMap, uv).r;
 
@@ -179,6 +189,7 @@ vec3 getSpotLight() {
 	diffuse = diffuse * intensity;
 	specular = specular * intensity;
 
+	// if the button is pressed, it will turn off spot light.
 	if(useSL== 0) {
 		return diffuse + specular + ambient;
 	}
