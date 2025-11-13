@@ -61,11 +61,9 @@ void main() {
 	n = normalize(TBN * n);
 	}
 
-
 	vec3 result = getDirectionalLight() ;
 	result += getPointLight() + getSpotLight();
 	FragColor = vec4(result, 1.0);
-
 }
 
 

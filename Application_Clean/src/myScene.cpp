@@ -8,14 +8,15 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_camera->attachHandler(m_window, m_handler);
 	// takes the vertex and fragment shader and compiles
 	my_shader = new Shader("..\\Shaders\\vertexshader.glsl", "..\\Shaders\\fragmentshader.glsl");
-
+	// takes normal textures of the cube and floor then compiles it inside fragment shader.
 	unsigned int cubeNorm = TextureManager::loadTexture("..\\Resources\\normalCube.jpg");
+	unsigned int floorNorm = TextureManager::loadTexture("..\\Resources\\normalFloor.jpg");
 	// takes texture of cube and compiles inside fragment shader.
 	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
 	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
 	// takes textures of floor and compiles inside fragment shader.
-	//unsigned int floorDiff = TextureManager::loadTexture("..\\Resources\\diffuseFloor.jpg");
-	//unsigned int floorSpec = TextureManager::loadTexture("..\\Resources\\specularFloor.jpg");
+	unsigned int floorDiff = TextureManager::loadTexture("..\\Resources\\diffuseFloor.jpg");
+	unsigned int floorSpec = TextureManager::loadTexture("..\\Resources\\specularFloor.jpg");
 	// creates the directional lights and gives the uniforms a value
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(my_shader);
@@ -29,7 +30,7 @@ myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
 	m_cube = new Cube(64, cubeDiff, cubeSpec, cubeNorm);
 	m_cube->setCubeMaterialValues(my_shader);
 	// creates the floor and gives the uniforms a value;
-	m_plane = new Plane(64, cubeDiff, cubeSpec, cubeNorm);
+	m_plane = new Plane(64, floorDiff, floorSpec, floorNorm);
 	m_plane->setPlaneMaterialValues(my_shader);
 }
 
@@ -67,12 +68,14 @@ void myScene::render()
 
 	// cube.
 	glBindVertexArray(m_cube->getVAO());
+	m_cube->setCubeMaterialValues(my_shader);
 	m_cube->resetTranform();
 	m_cube->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
 	// second cube
 	m_cube->resetTranform();
+	m_cube->setCubeMaterialValues(my_shader);
 	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
 	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 0.0f, 2.0f));
 	m_cube->setTransform(my_shader);
@@ -83,6 +86,7 @@ void myScene::render()
 
 	// floor
 	glBindVertexArray(m_plane->getVAO());
+	m_plane->setPlaneMaterialValues(my_shader);
 	m_plane->resetTransform();
 	m_plane->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
