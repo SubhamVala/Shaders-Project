@@ -1,5 +1,6 @@
 #pragma once
 #include "myScene.h";
+
 // Q - Toggling normal mapping
 // E - Toggling Directional Light
 // R - Toggling Spot Light
@@ -106,7 +107,6 @@ void myScene::render()
 	m_cube->resetTranform();
 
 	// third cube
-	m_cube->resetTranform();
 	m_cube->setCubeMaterialValues(my_shader);
 	m_cube->translate(glm::vec3(-2.0, 1.0, -1.0));
 	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 2.0f, 0.0f));
@@ -115,7 +115,6 @@ void myScene::render()
 	m_cube->resetTranform();
 	
 	// fourth cube
-	m_cube->resetTranform();
 	m_cube->setCubeMaterialValues(my_shader);
 	m_cube->translate(glm::vec3(2.5, 2.0, 0.0));
 	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(0.0f, 2.0f, 2.0f));
@@ -129,5 +128,25 @@ void myScene::render()
 	m_plane->resetTransform();
 	m_plane->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	m_plane->resetTransform();
 
+	// Right Wall.
+	glBindVertexArray(m_plane->getVAO());
+	m_plane->setPlaneMaterialValues(my_shader);
+	m_plane->resetTransform();
+	m_plane->translate(glm::vec3(5.0, 3.6, 0.0));
+	m_plane->rotate(90, glm::vec3(0.0, 0.0, 1.0));
+	m_plane->scale(1.0, glm::vec3(0.8, 1.0, 1.0));
+	m_plane->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
+
+	// Wall opposite to camera.
+	glBindVertexArray(m_plane->getVAO());
+	m_plane->setPlaneMaterialValues(my_shader);
+	m_plane->resetTransform();
+	m_plane->translate(glm::vec3(0.0, 3.6, -5.0));
+	m_plane->rotate(90, glm::vec3(1.0, 0.0, 0.0));
+	m_plane->scale(1.0, glm::vec3(1.0, 1.0, 0.8));
+	m_plane->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_plane->getIndicesCount(), GL_UNSIGNED_INT, 0);
 }

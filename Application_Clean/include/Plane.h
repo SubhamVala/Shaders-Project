@@ -22,11 +22,16 @@ public:
 	glm::mat4& getModelMatrix() { return m_transform; }
 	unsigned int getIndicesCount() { return floorIndices.size(); }
 	 
+	void rotate(float angle, glm::vec3 axis);
+	void scale(float scaleFactor, glm::vec3 axis);
+	void translate(glm::vec3 translatation);
+	
+
 private:
 	const float floorLevel = -2.0f;
 	const float floorSize = 7.0f;
 	void makeVAO();
-
+	
 	unsigned int m_VAO, m_VBO, m_EBO;
 	glm::mat4 m_transform;
 

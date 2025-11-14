@@ -27,6 +27,21 @@ void Plane::setPlaneMaterialValues(Shader* shader)
 
 }
 
+void Plane::scale(float scaleFactor, glm::vec3 axis)
+{
+	m_transform = glm::scale(m_transform, glm::vec3(scaleFactor) * axis);
+}
+
+void Plane::translate(glm::vec3 translatation)
+{
+	m_transform = glm::translate(m_transform, translatation);
+}
+
+void Plane::rotate(float angle, glm::vec3 axis)
+{
+	m_transform = glm::rotate(m_transform, glm::radians(angle), axis);
+}
+
 void Plane::makeVAO()
 {
 	glCreateBuffers(1, &m_VBO); // creates vertex buffer object
