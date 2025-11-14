@@ -32,7 +32,6 @@ private:
 
 	// properties of the floor.
 	float m_shine;
-	float m_specularStrength;
 	unsigned int m_diffuseTexture;
 	unsigned int m_specularTexture;
 	unsigned int m_normalTexture;

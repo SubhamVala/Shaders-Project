@@ -1,5 +1,9 @@
 #pragma once
 #include "myScene.h";
+// Q - Toggling normal mapping
+// E - Toggling Directional Light
+// R - Toggling Spot Light
+// T - Toggling PointLight
 
 // constructor which initilises the windows and inputHandler
 myScene::myScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) {
@@ -97,6 +101,24 @@ void myScene::render()
 	m_cube->setCubeMaterialValues(my_shader);
 	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
 	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 0.0f, 2.0f));
+	m_cube->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	m_cube->resetTranform();
+
+	// third cube
+	m_cube->resetTranform();
+	m_cube->setCubeMaterialValues(my_shader);
+	m_cube->translate(glm::vec3(-2.0, 1.0, -1.0));
+	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(2.0f, 2.0f, 0.0f));
+	m_cube->setTransform(my_shader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	m_cube->resetTranform();
+	
+	// fourth cube
+	m_cube->resetTranform();
+	m_cube->setCubeMaterialValues(my_shader);
+	m_cube->translate(glm::vec3(2.5, 2.0, 0.0));
+	m_cube->rotate((float)(glfwGetTime() * 90.0f), glm::vec3(0.0f, 2.0f, 2.0f));
 	m_cube->setTransform(my_shader);
 	glDrawElements(GL_TRIANGLES, m_cube->getIndicesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTranform();
